@@ -17,20 +17,11 @@ use Inertia\Inertia;
 |
 */
 
-Route::get('/', [HomeController::class, 'index'])->name('home');
+Route::get('/', function () {
+    return Inertia::render('DashboardWelcome');
+})->name('dashboard');
 
-Route::get('/properties-for-sale', [PropertiesForSaleController::class, 'index'])->name('properties-for-sale');
-Route::get('/properties-for-rent', [PropertiesForRentController::class, 'index'])->name('properties-for-rent');
-
-Route::prefix('dashboard')->middleware(['auth', 'verified'])->group(
-    function () {
-        Route::get('/', function () {
-            return Inertia::render('DashboardWelcome');
-        })->name('dashboard');
-
-        Route::get('/properties-for-rent', [PropertiesForRentController::class, 'show'])->name('properties-for-rent-show');
-        Route::post('/properties-for-rent', [PropertiesForRentController::class, 'store'])->name('properties-for-rent-store');
-    }
-);
+Route::get('/properties-for-rent', [PropertiesForRentController::class, 'show'])->name('properties-for-rent-show');
+Route::post('/properties-for-rent', [PropertiesForRentController::class, 'store'])->name('properties-for-rent-store');
 
 require __DIR__ . '/auth.php';
